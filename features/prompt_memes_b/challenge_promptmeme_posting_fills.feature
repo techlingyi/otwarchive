@@ -4,6 +4,52 @@ Feature: Prompt Meme Challenge
   As a humble user
   I want to prompt, post and receive fills anonymously
 
+  Scenario: Filling two prompts means one email to each prompter
+  Given basic tags
+    And the following activated users exist
+      | login   | password | email     |
+      | myname1 | password | my1@e.org |
+      | myname2 | password | my2@e.org |
+    And a fandom exists with name: "GhostSoup", canonical: true
+    And I am logged in as "mod1"
+    And I set up a basic promptmeme "The Kissing Game"
+    And I log out
+  When I am logged in as "myname1"
+    And I go to "The Kissing Game" collection's page
+    And I follow "Sign Up"
+    And I fill in "challenge_signup_requests_attributes_0_tag_set_attributes_fandom_tagnames" with "GhostSoup"
+    And I check "challenge_signup_requests_attributes_0_anonymous"
+    And I press "Submit"
+  Then I should see "Sign-up was successfully created"
+  When I log out
+  When I am logged in as "myname2"
+    And I go to "The Kissing Game" collection's page
+    And I follow "Sign Up"
+    And I fill in "challenge_signup_requests_attributes_0_tag_set_attributes_fandom_tagnames" with "GhostSoup"
+    And I press "Submit"
+  Then I should see "Sign-up was successfully created"
+  When I log out
+  When I am logged in as "myname3"
+    And I go to "The Kissing Game" collection's page
+    And I follow "Prompts (2)"
+    And I press "Claim"
+    And I go to "The Kissing Game" collection's page
+    And I follow "Prompts (2)"
+    And I press "Claim"
+    And I follow "New Work"
+    And I fill in the basic work information for "Existing work"
+    And I check "The Kissing Game (Anonymous)"
+    And I check "The Kissing Game (myname2)"
+  Given all emails have been delivered
+  When I press "Post"
+  Then I should see "Work was successfully posted"
+    And I should see "In response to a prompt by Anonymous"
+    And I should see "In response to a prompt by myname2"
+    And 1 email should be delivered to "my1@e.org"
+    And the email should have "A response to your prompt" in the subject
+    And 1 email should be delivered to "my2@e.org"
+    And the email should have "A response to your prompt" in the subject
+
   Scenario: Prompt anonymously and be notified of the fills without the writer knowing who I am
   Given basic tags
     And the following activated user exists
