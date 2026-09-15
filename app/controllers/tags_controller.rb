@@ -115,12 +115,19 @@ class TagsController < ApplicationController
         else
           @display_tags = @display_creation.works.visible.collect(&:freeforms).flatten.compact.uniq.sort
         end
-      else
+      elsif params[:creation_type] == 'Request'
         @display_tags = case params[:tag_type]
                         when 'warnings'
                           @display_creation.tag_groups["ArchiveWarning"]
                         when 'freeforms'
                           @display_creation.tag_groups["Freeform"]
+                        end
+      else
+        @display_tags = case params[:tag_type]
+                        when 'warnings'
+                          @display_creation.archive_warnings
+                        when 'freeforms'
+                          @display_creation.freeforms
                         end
       end
 

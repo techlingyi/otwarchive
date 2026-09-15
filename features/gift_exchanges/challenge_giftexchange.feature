@@ -4,6 +4,42 @@ Feature: Gift Exchange Challenge
   As a humble user
   I want to run a gift exchange
 
+  @javascript
+  Scenario: Can hide and show warnings on a request
+    Given the gift exchange "Awesome Gift Exchange" is ready for signups
+    When I am logged in as "mod1"
+      And I go to "Awesome Gift Exchange" gift exchange edit page
+      And I check "Requests visible?"
+      And I submit
+      And I sign up for "Awesome Gift Exchange" with combination A
+    When I am logged in as "myname2"
+      And I set my preferences to hide warnings
+      And I go to "Awesome Gift Exchange" collection's page
+      And I follow "Requests Summary"
+    Then I should see "Show warnings"
+      And I should not see "Creator Chose Not To Use Archive Warnings"
+    When I follow "Show warnings"
+    Then I should not see "Show warnings"
+      And I should see "Creator Chose Not To Use Archive Warnings"
+
+  @javascript
+  Scenario: Can hide and show additional tags on a request
+    Given the gift exchange "Awesome Gift Exchange" is ready for signups
+    When I am logged in as "mod1"
+      And I go to "Awesome Gift Exchange" gift exchange edit page
+      And I check "Requests visible?"
+      And I submit
+      And I sign up for "Awesome Gift Exchange" with combination A
+    When I am logged in as "myname2"
+      And I set my preferences to hide freeform
+      And I go to "Awesome Gift Exchange" collection's page
+      And I follow "Requests Summary"
+    Then I should see "Show additional tags"
+      And I should not see "Alternate Universe - Historical"
+    When I follow "Show additional tags"
+    Then I should not see "Show additional tags"
+      And I should see "Alternate Universe - Historical"
+
   Scenario: Create a collection to house a gift exchange
     Given I am logged in as "mod1"
       And I have standard challenge tags setup
