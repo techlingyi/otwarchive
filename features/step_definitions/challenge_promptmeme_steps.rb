@@ -265,6 +265,15 @@ When /^I sign up for Battle 12 with combination E$/ do
     step "I press \"Submit\""
 end
 
+# Only works after step "I enable archive warning challenge options"
+When /^I sign up for Battle 12 with combination F$/ do
+  step %{I start signing up for "Battle 12"}
+    step %{I check the 1st checkbox with the value "Stargate Atlantis"}
+    step %{I check the 2nd checkbox with the value "Stargate Atlantis"}
+    step %{I check the 1st checkbox with the value "No Archive Warnings Apply"}
+    click_button "Submit"
+end
+
 When /^I sign up for "([^\"]*)" fixed-fandom prompt meme$/ do |title|
   visit collection_path(Collection.find_by(title: title))
   step %{I follow "Sign Up"}
