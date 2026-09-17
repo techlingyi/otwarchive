@@ -109,29 +109,29 @@ class TagsController < ApplicationController
       @display_creation = model.find(params[:creation_id]) if model.is_a? Class
 
       # Tags aren't directly on Series or Requests, so we need to handle them differently
-      case params[:creation_type]
-      when "Series"
-        @display_tags = case params[:tag_type]
+      @display_tags = case params[:creation_type]
+                      when "Series"
+                        case params[:tag_type]
                         when "warnings"
                           @display_creation.works.visible.collect(&:archive_warnings).flatten.compact.uniq.sort
                         when "freeforms"
                           @display_creation.works.visible.collect(&:freeforms).flatten.compact.uniq.sort
                         end
-      when "Request"
-        @display_tags = case params[:tag_type]
+                      when "Request"
+                        case params[:tag_type]
                         when "warnings"
                           @display_creation.tag_groups["ArchiveWarning"]
                         when "freeforms"
                           @display_creation.tag_groups["Freeform"]
                         end
-      else
-        @display_tags = case params[:tag_type]
+                      else
+                        case params[:tag_type]
                         when "warnings"
                           @display_creation.archive_warnings
                         when "freeforms"
                           @display_creation.freeforms
                         end
-      end
+                      end
 
       # The string used in views/tags/show_hidden.js.erb
       if params[:tag_type] == 'warnings'
