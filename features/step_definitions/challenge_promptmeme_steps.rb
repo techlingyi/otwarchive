@@ -179,10 +179,10 @@ When /^I fill in multi-prompt challenge options$/ do
     step %{I submit}
 end
 
-When /^I enable archive warning challenge options$/ do
+When "I enable archive warning challenge options" do
   step "I fill in prompt meme challenge options"
-    step %{I fill in "prompt_meme_request_restriction_attributes_archive_warning_num_allowed" with "1"}
-    step %{I submit}
+  step %{I fill in "prompt_meme_request_restriction_attributes_archive_warning_num_allowed" with "1"}
+  step %{I submit}
 end
 
 When /^I fill in prompt meme challenge options$/ do
@@ -266,12 +266,12 @@ When /^I sign up for Battle 12 with combination E$/ do
 end
 
 # Only works after step "I enable archive warning challenge options"
-When /^I sign up for Battle 12 with combination F$/ do
+When "I sign up for Battle 12 with combination F" do
   step %{I start signing up for "Battle 12"}
-    step %{I check the 1st checkbox with the value "Stargate Atlantis"}
-    step %{I check the 2nd checkbox with the value "Stargate Atlantis"}
-    step %{I check the 1st checkbox with the value "No Archive Warnings Apply"}
-    click_button "Submit"
+  step %{I check the 1st checkbox with the value "Stargate Atlantis"}
+  step %{I check the 2nd checkbox with the value "Stargate Atlantis"}
+  step %{I check the 1st checkbox with the value "No Archive Warnings Apply"}
+  click_button "Submit"
 end
 
 When /^I sign up for "([^\"]*)" fixed-fandom prompt meme$/ do |title|
